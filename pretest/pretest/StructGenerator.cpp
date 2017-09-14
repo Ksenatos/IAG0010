@@ -6,10 +6,9 @@
 //#include "malloc.h"
 #include "ctype.h"
 #include <stdlib.h>
+#include <iostream>
 
-                #include <iostream>
-
-                using namespace std;
+using namespace std;
 
 #pragma warning (disable : 4996 )
 
@@ -25,28 +24,20 @@ Header *StructGenerator(int nObject)
 	Header *pResult = 0, *p, *p1, *p2;
 	for (int i = 0;  i < nObject;  i++)
 	{
-        //int j=0;
 		Object *pNewObject = CreateObject(i);
 		if (!i)
 		{
-            //j++;
-
 			pResult = CreateHeader(pNewObject);
-
 			continue;
 		}
      
 		for (p = pResult;  p && p->cBegin != *pNewObject->pID;  p = p->pNext);
 		if (p)
 		{
-            //cout << "j = " << j << "  i = " << i <<"\n";
-            
-          //  j++;
-			pNewObject->pNext = p->pObject;
+            pNewObject->pNext = p->pObject;
 			p->pObject = pNewObject;
 			continue;
         }else{
-            //cout << "xxxj = " << j << "  xxxi = " << i <<"\n";
         }
 		Header *pNewHeader = CreateHeader(pNewObject);
 		for (p1 = pResult, p2 = 0;  p1 && p1->cBegin < *pNewObject->pID;  p2 = p1, p1 = p1->pNext);
@@ -60,7 +51,6 @@ Header *StructGenerator(int nObject)
 			pNewHeader->pNext = p1;
 			p2->pNext = pNewHeader;
 		}
-//        cout << pResult->cBegin << " " << i << "\n";
 
         
 	}
@@ -84,7 +74,7 @@ char *GetTime()
 	time_t RawTime;
 	time(&RawTime);
 	struct tm tmTime;
-	//localtime_s(&tmTime, &RawTime);
+    localtime_r(&RawTime, &tmTime);
 	char *pResult = (char *)malloc(10);
 	sprintf(pResult, "%02d:%02d:%02d", tmTime.tm_hour, tmTime.tm_min, tmTime.tm_sec);
 	return pResult;

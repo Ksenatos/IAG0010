@@ -15,31 +15,33 @@ using namespace std;
 
 Object *o;
 
-void PrintObjects(Header *pList)
+void PrintObjects(Header *pList, int num = 1)
 {
     if (pList)
     {
         cout << pList->cBegin<<" objects=> \n";
         o = pList->pObject;
-        function<void (Object*)> F = [&](Object *o1)
+        function<void (Object*)> F = [&](Object *o)
         {
-            if (o1)
+            if (o)
             {
-                cout << o1->pID << " " << o1->Code << "\n";
-                F(o1->pNext);
+                cout << num << ") " << o->pID << " " << o->Code << " " << o->pTime<<"\n";
+                num++;
+                F(o->pNext);
             }
         };
         F(o);
-        PrintObjects (pList->pNext);
+        PrintObjects (pList->pNext, num++);
     }
 }
+
 
 int RemoveObject(Header **ppList, char *pExistingID, Header *preH)
 {
     Header* pList = *ppList;
         if (*ppList)
         {
-            if (pExistingID[0] == pList->cBegin)
+            if (pExistingID[0] == pList->cBegin)                                        //choosing a header
             {
                 o = pList->pObject;
                 function<int (Object*, Object*)> F = [&](Object *o1, Object *pre)
@@ -48,33 +50,33 @@ int RemoveObject(Header **ppList, char *pExistingID, Header *preH)
                         if (strcmp (pExistingID, o1->pID) == 0)
                         {
                             
-                            cout << o1->pID <<"WOWOWOWOW\n";
+                            cout << o1->pID <<"object removed\n";                            //remove object
                             pre->pNext = o1->pNext;
                             delete o1;
                             return 1;
-                        }else
+                        } else
                         {
                             F(o1->pNext, o1);
                         }
                     return 0;
                 };
-                if (strcmp (pExistingID, o->pID) == 0)
+                if (strcmp (pExistingID, o->pID) == 0)                                  //first object
                 {
                     if (o->pNext)
                     {
-                        cout << o->pID <<" ITS WORKING\n";
+                        cout << o->pID <<" first object removed\n";
                         pList->pObject = o->pNext;
                         delete o;
-                    }else
+                    }else                                                              //only object in header
                     {
-                        if (*ppList == preH)
+                        if (*ppList == preH)                                            //remove first header
                         {
-                            cout << "HEREEEEE\n";
+                            cout << " first header remooved\n";
                             *ppList = pList->pNext;
                             delete pList;
-                        }else
+                        }else                                                           //remove not first header
                         {
-                            cout << pList->cBegin <<" <--remove it\n";
+                            cout << pList->cBegin <<" header removed\n";
                             preH->pNext = pList->pNext;
                             delete pList;
                         }

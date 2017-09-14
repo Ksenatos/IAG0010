@@ -1,17 +1,18 @@
 #pragma once
 
-struct Object
+typedef struct Object
 {
 	char* pID;
-	int Code;
+	unsigned long int Code;
 	char* pTime;
 	Object *pNext;
-};
-struct Header
+}Object;
+
+typedef struct Header
 {
 	Object* pObject;
 	char cBegin;
 	Header *pNext;
-};
+}Header;
 
 Header *StructGenerator(int nObject);
